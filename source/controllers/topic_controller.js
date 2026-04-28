@@ -1,7 +1,10 @@
 
+// traemos el modelo de Topic para interactuar con la base de datos
 const TopicModel = require("../models/topic_model");
 
+// controlador que maneja la lógica de los topics
 const topicController = {
+
     // Obtener todos los temas y renderizar la vista principal
     getAllTopics: async (req, res) => {
         try {
@@ -79,4 +82,6 @@ const topicController = {
     }
 };
 
+
+// Exportamos el controlador para que pueda ser utilizado en las rutas
 module.exports = topicController;

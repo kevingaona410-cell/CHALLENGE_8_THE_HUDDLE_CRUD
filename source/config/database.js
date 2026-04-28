@@ -1,3 +1,5 @@
+
+// Configuración de la base de datos SQLite
 const sqlite3 = require("sqlite3").verbose();
 const path = require("path");
 
@@ -39,4 +41,5 @@ function initializeTables() {
   });
 }
 
+// Exportamos la conexión a la base de datos para que pueda ser utilizada en los modelos
 module.exports = db;

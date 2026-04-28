@@ -1,12 +1,13 @@
 // Importacion de las librerias de node
 const express = require("express");
-const { engine } = require("express-handlebars"); 
-const path = require("path");
+
+const { engine } = require("express-handlebars");       // handlebars para renderizar las vistas
+const path = require("path");                           // path para manejar rutas de archivos
 
 const app = express();
 const PORT = 3000;
 
-// Importación de rutas
+// Importamos las rutas de topic_routes que se encargan de manejar las solicitudes relacionadas con los temas
 const topicRoutes = require("./source/routes/topic_routes");
 
 // Configuración de Handlebars

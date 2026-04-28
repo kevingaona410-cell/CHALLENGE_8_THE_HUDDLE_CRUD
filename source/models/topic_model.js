@@ -1,6 +1,10 @@
+
+// Importacion de la base de datos para realizar las operaciones CRUD
 const db = require("../config/database");
 
+// Modelo de Topic para interactuar con la base de datos
 const TopicModel = {
+
     // Obtener todos los temas con sus links
     findAll: () => {
         return new Promise((resolve, reject) => {
@@ -10,6 +14,7 @@ const TopicModel = {
                 LEFT JOIN links l ON t.id = l.topic_id
                 ORDER BY t.votes DESC
             `;
+            // Ejecutar la consulta para obtener los temas y sus links
             db.all(query, [], (err, rows) => {
                 if (err) return reject(err);
                 
@@ -24,6 +29,7 @@ const TopicModel = {
                             links: [] 
                         };
                     }
+                    // Si el tema tiene un link asociado, agregarlo al array de links del tema
                     if (row.link_id) {
                         topicsMap[row.id].links.push({
                             id: row.link_id,
@@ -32,11 +38,13 @@ const TopicModel = {
                         });
                     }
                 });
+                // Devolver un array de temas con sus links
                 resolve(Object.values(topicsMap));
             });
         });
     },
 
+    // Crear un nuevo tema
     create: (title) => {
         return new Promise((resolve, reject) => {
             db.run("INSERT INTO topics (title) VALUES (?)", [title], function(err) {
@@ -46,6 +54,7 @@ const TopicModel = {
         });
     },
 
+    // Agregar un voto a un tema
     addVote: (id) => {
         return new Promise((resolve, reject) => {
             db.run("UPDATE topics SET votes = votes + 1 WHERE id = ?", [id], (err) => {
@@ -55,6 +64,7 @@ const TopicModel = {
         });
     },
 
+    // Eliminar un tema 
     delete: (id) => {
         return new Promise((resolve, reject) => {
             db.run("DELETE FROM topics WHERE id = ?", [id], (err) => {
@@ -64,6 +74,7 @@ const TopicModel = {
         });
     },
 
+    // Agregar un link a un tema
     addLink: (topicId, url) => {
         return new Promise((resolve, reject) => {
             db.run("INSERT INTO links (topic_id, url) VALUES (?, ?)", [topicId, url], (err) => {
@@ -73,6 +84,7 @@ const TopicModel = {
         });
     },
 
+    // Eliminar un link de un tema
     deleteLink: (linkId) => {
         return new Promise((resolve, reject) => {
             db.run("DELETE FROM links WHERE id = ?", [linkId], (err) => {
@@ -83,4 +95,5 @@ const TopicModel = {
     }
 };
 
+// Exportamos el modelo para que pueda ser utilizado en el controlador
 module.exports = TopicModel;
