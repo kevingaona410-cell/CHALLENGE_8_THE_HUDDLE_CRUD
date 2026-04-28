@@ -1,0 +1,105 @@
+:root {
+    --primary-color: #4a90e2;
+    --danger-color: #e74c3c;
+    --success-color: #2ecc71;
+    --bg-color: #f8f9fa;
+    --card-bg: #ffffff;
+    --text-color: #2d3436;
+    --border-radius: 10px;
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+body { 
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
+    max-width: 850px; 
+    margin: 0 auto; 
+    padding: 40px 20px; 
+    line-height: 1.6; 
+    background-color: var(--bg-color);
+    color: var(--text-color);
+}
+
+h1 { 
+    text-align: center; 
+    color: var(--primary-color);
+    font-size: 2.5rem;
+    margin-bottom: 40px;
+}
+
+h2, h3, h4 { color: #444; }
+
+/* Estilo de las tarjetas de temas */
+.topic-card { 
+    background: var(--card-bg);
+    padding: 25px; 
+    margin-bottom: 25px; 
+    border-radius: var(--border-radius); 
+    box-shadow: var(--shadow);
+    border: none;
+    transition: transform 0.2s ease;
+}
+
+.topic-card:hover {
+    transform: translateY(-2px);
+}
+
+.topic-header { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    border-bottom: 2px solid #f1f1f1;
+    padding-bottom: 15px;
+    margin-bottom: 15px;
+}
+
+/* Badge de votos */
+.vote-badge { 
+    background: var(--primary-color); 
+    color: white;
+    padding: 4px 12px; 
+    border-radius: 20px; 
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+/* Sección de links */
+.links-section { 
+    background: #fdfdfd; 
+    padding: 15px; 
+    margin-top: 15px; 
+    border-radius: var(--border-radius);
+    border: 1px dashed #ddd;
+}
+
+ul { list-style: none; padding: 0; }
+li { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid #eee;
+}
+
+/* Botones y inputs */
+button { 
+    cursor: pointer; 
+    padding: 8px 16px; 
+    border-radius: 6px; 
+    border: none; 
+    font-weight: 600;
+    transition: all 0.2s;
+}
+
+button:hover { opacity: 0.85; filter: brightness(0.9); }
+
+input[type="text"], input[type="url"] {
+    padding: 10px;
+    border: 2px solid #ddd;
+    border-radius: 6px;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+input:focus { border-color: var(--primary-color); }
+
+form { display: inline-flex; gap: 8px; align-items: center; }
