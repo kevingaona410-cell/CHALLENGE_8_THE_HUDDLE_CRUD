@@ -19,6 +19,7 @@ const TopicModel = {
                 if (err) return reject(err);
                 
                 // Agrupar links por topic
+                const topics = [];
                 const topicsMap = {};
                 rows.forEach(row => {
                     if (!topicsMap[row.id]) {
@@ -28,6 +29,8 @@ const TopicModel = {
                             votes: row.votes, 
                             links: [] 
                         };
+                        // Guardamos la referencia en el array para preservar el orden de SQL
+                        topics.push(topicsMap[row.id]);
                     }
                     // Si el tema tiene un link asociado, agregarlo al array de links del tema
                     if (row.link_id) {
@@ -39,7 +42,7 @@ const TopicModel = {
                     }
                 });
                 // Devolver un array de temas con sus links
-                resolve(Object.values(topicsMap));
+                resolve(topics);
             });
         });
     },
@@ -60,16 +63,6 @@ const TopicModel = {
             db.run("UPDATE topics SET votes = votes + 1 WHERE id = ?", [id], (err) => {
                 if (err) reject(err);
                 else resolve();
-            });
-        });
-    },
-
-    // Ordenar los temas por votos
-    sortByVotes: () => {
-        return new Promise((resolve, reject) => {
-            db.all("SELECT * FROM topics ORDER BY votes DESC", [], (err, rows) => {
-                if (err) reject(err);
-                else resolve(rows);
             });
         });
     },
