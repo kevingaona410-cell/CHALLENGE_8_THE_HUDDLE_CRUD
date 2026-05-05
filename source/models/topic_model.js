@@ -64,6 +64,16 @@ const TopicModel = {
         });
     },
 
+    // Ordenar los temas por votos
+    sortByVotes: () => {
+        return new Promise((resolve, reject) => {
+            db.all("SELECT * FROM topics ORDER BY votes DESC", [], (err, rows) => {
+                if (err) reject(err);
+                else resolve(rows);
+            });
+        });
+    },
+
     // Eliminar un tema 
     delete: (id) => {
         return new Promise((resolve, reject) => {
