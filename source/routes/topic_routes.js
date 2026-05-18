@@ -9,10 +9,13 @@ const topicController = require("../controllers/topic_controller");
 router.get("/", topicController.getAllTopics);
 router.post("/", topicController.createTopic);
 router.post("/topics/:id/vote", topicController.voteTopic);
+router.post("/topics/:id/update", topicController.updateTopic);
 router.post("/topics/:id/delete", topicController.deleteTopic);
 
 // Rutas para manejar los links asociados a cada topic
 router.post("/topics/:id/links", topicController.addLink);
+router.post("/topics/:id/links/:linkId/vote", topicController.voteLink);
+router.post("/topics/:id/links/:linkId/update", topicController.updateLink);
 router.post("/topics/:id/links/:linkId/delete", topicController.deleteLink);
 
 // Exportamos el router para que pueda ser utilizado en app.js

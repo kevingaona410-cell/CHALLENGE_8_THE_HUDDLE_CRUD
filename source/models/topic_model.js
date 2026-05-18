@@ -12,7 +12,7 @@ const TopicModel = {
                 SELECT t.*, l.id as link_id, l.url, l.votes as link_votes 
                 FROM topics t 
                 LEFT JOIN links l ON t.id = l.topic_id
-                ORDER BY t.votes DESC
+                ORDER BY t.votes DESC, l.votes DESC
             `;
             // Ejecutar la consulta para obtener los temas y sus links
             db.all(query, [], (err, rows) => {
@@ -77,10 +77,40 @@ const TopicModel = {
         });
     },
 
+    // Actualizar un tema
+    update: (id, title) => {
+        return new Promise((resolve, reject) => {
+            db.run("UPDATE topics SET title = ? WHERE id = ?", [title, id], (err) => {
+                if (err) reject(err);
+                else resolve();
+            });
+        });
+    },
+
     // Agregar un link a un tema
     addLink: (topicId, url) => {
         return new Promise((resolve, reject) => {
             db.run("INSERT INTO links (topic_id, url) VALUES (?, ?)", [topicId, url], (err) => {
+                if (err) reject(err);
+                else resolve();
+            });
+        });
+    },
+
+    // Actualizar un link
+    updateLink: (linkId, url) => {
+        return new Promise((resolve, reject) => {
+            db.run("UPDATE links SET url = ? WHERE id = ?", [url, linkId], (err) => {
+                if (err) reject(err);
+                else resolve();
+            });
+        });
+    },
+
+    // Votar por un link
+    addLinkVote: (linkId) => {
+        return new Promise((resolve, reject) => {
+            db.run("UPDATE links SET votes = votes + 1 WHERE id = ?", [linkId], (err) => {
                 if (err) reject(err);
                 else resolve();
             });

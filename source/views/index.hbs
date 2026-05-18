@@ -3,65 +3,76 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Huddle - Temas de Discusión</title>
-    <link rel="stylesheet" href="/style/style.css">
-    <script src="/js/script.js" defer></script>
+    <title>The Huddle - Temas de Aprendizaje</title>
+    <style>
+        body { font-family: sans-serif; max-width: 800px; margin: auto; padding: 20px; }
+        .topic-card { border: 1px solid #ddd; padding: 15px; margin-bottom: 20px; border-radius: 8px; }
+        .links-list { margin-top: 10px; }
+        form { display: inline; }
+    </style>
 </head>
 <body>
-    <h1> Learn It, Love It Inc.</h1>
+    <h1>The Huddle</h1>
 
-    <!-- Formulario para crear nuevo tema -->
+    <!-- Formulario para crear un nuevo tema -->
     <section>
-        <h2>Proponer un nuevo tema</h2>
+        <h2>Nuevo Tema</h2>
         <form action="/" method="POST">
-            <input type="text" name="title" placeholder="¿Sobre qué quieres hablar?" required style="width: 70%; padding: 8px;">
-            <button type="submit" style="padding: 8px 15px;">Crear Tema</button>
+            <input type="text" name="title" placeholder="¿Qué quieres aprender?" required>
+            <button type="submit">Crear Tema</button>
         </form>
     </section>
 
     <hr>
 
-    <!-- Listado de temas -->
-    <section>
-        {{#if topics.length}}
-            {{#each topics}}
-                <div class="topic-card">
-                    <div class="topic-header">
-                        <h3>{{this.title}} <span class="vote-badge">{{this.votes}} votos</span></h3>
-                        <div>
-                            <form action="/topics/{{this.id}}/vote" method="POST">
-                                <button type="submit">👍 Votar</button>
-                            </form>
-                            <form action="/topics/{{this.id}}/delete" method="POST">
-                                <button type="submit" onclick="return confirm('¿Seguro que deseas eliminar este tema?')">🗑️</button>
-                            </form>
-                        </div>
-                    </div>
+    <!-- Listado de temas (Ordenados por votos gracias al modelo) -->
+    {{#each topics}}
+        <div class="topic-card">
+            <h3>{{this.title}} (Votos: {{this.votes}})</h3>
+            
+            <!-- Operaciones de Tema -->
+            <form action="/topics/{{this.id}}/vote" method="POST">
+                <button type="submit">Votar Tema</button>
+            </form>
+            
+            <form action="/topics/{{this.id}}/update" method="POST">
+                <input type="text" name="title" value="{{this.title}}" required>
+                <button type="submit">Renombrar</button>
+            </form>
 
-    <!-- Sección de comentarios -->
-                    <div class="links-section">
-                        <h4>Enlaces útiles:</h4>
-                        <ul>
-                            {{#each this.links}}
-                                <li>
-                                    <a href="{{this.url}}" target="_blank">{{this.url}}</a>
-                                    <form action="/topics/{{../id}}/links/{{this.id}}/delete" method="POST" style="margin-left: 10px;">
-                                        <button type="submit" style="font-size: 0.8em;">Eliminar link</button>
-                                    </form>
-                                </li>
-                            {{/each}}
-                        </ul>
-                        
-                        <form action="/topics/{{this.id}}/links" method="POST">
-                            <input type="url" name="link" placeholder="Pegar URL aquí (http://...)" required style="width: 60%;">
-                            <button type="submit">Añadir Link</button>
-                        </form>
-                    </div>
-                </div>
-            {{/each}}
-        {{else}}
-            <p>No hay temas propuestos todavía. ¡Sé el primero!</p>
-        {{/if}}
-    </section>
+            <form action="/topics/{{this.id}}/delete" method="POST">
+                <button type="submit" style="color: red;">Eliminar</button>
+            </form>
+
+            <!-- Agregar Links al Tema -->
+            <div class="links-list">
+                <h4>Enlaces:</h4>
+                <form action="/topics/{{this.id}}/links" method="POST">
+                    <input type="url" name="link" placeholder="https://..." required>
+                    <button type="submit">Añadir Enlace</button>
+                </form>
+
+                <ul>
+                    {{#each this.links}}
+                        <li>
+                            <a href="{{this.url}}" target="_blank">{{this.url}}</a> - <b>{{this.votes}} votos</b>
+                            <form action="/topics/{{../id}}/links/{{this.id}}/vote" method="POST">
+                                <button type="submit">👍</button>
+                            </form>
+                            <form action="/topics/{{../id}}/links/{{this.id}}/update" method="POST">
+                                <input type="url" name="url" value="{{this.url}}" required>
+                                <button type="submit">✏️</button>
+                            </form>
+                            <form action="/topics/{{../id}}/links/{{this.id}}/delete" method="POST">
+                                <button type="submit">🗑️</button>
+                            </form>
+                        </li>
+                    {{/each}}
+                </ul>
+            </div>
+        </div>
+    {{/each}}
+
+    <script src="/js/main.js"></script>
 </body>
 </html>
